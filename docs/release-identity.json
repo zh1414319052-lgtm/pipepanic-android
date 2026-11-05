@@ -1,8 +1,8 @@
 {
   "softwareId": "de681cad754b9264",
   "applicationId": "org.olgsoft.apipepanic.haoke",
-  "versionCode": 32,
-  "versionName": "0.21-haoke.32",
+  "versionCode": 33,
+  "versionName": "0.21-haoke.33",
   "upstreamVersion": "0.21",
   "upstreamCommit": "f87c0d754641572b50919cd5c2d6d13d0a3ec440",
   "channel": "stable",

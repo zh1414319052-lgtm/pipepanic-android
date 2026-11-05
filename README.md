@@ -2,7 +2,7 @@
 
 <img height="160" src="./ic_launcher-web.png" align="right" alt="Blue glass pipe game icon" />
 
-**当前版本：0.21-haoke.32（构建 32），基于已验收的 0.31-QA 顶视 3D 版。**
+**当前版本：0.21-haoke.33（构建 32），基于已验收的 0.31-QA 顶视 3D 版。**
 
 [安装包与版本说明 / Download](https://www.haoke.org/software/de681cad754b9264)
 

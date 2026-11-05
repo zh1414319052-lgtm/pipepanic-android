@@ -56,6 +56,26 @@ test('pause blocks both placement and manual fill; repeated resume leaves one cl
     assert.equal(g.ppscore,10);
     assert.equal(intervals.size,1);
 });
+test('loading and lost 3D context freeze time and gameplay until rendering returns', () => {
+    const {game:g,intervals}=loadGame();
+    g.ppreset(2,0);
+    const clock=g.ppgametimer, tick=g.ppGameTick;
+    let ready=false;
+    g.PumpBoard={active:()=>ready,refresh(){}};
+    for(let i=0;i<100;i++) g.ppExecGameTick();
+    g.ppprocessboardclick('board0809');
+    assert.equal(g.ppgametimer,clock);
+    assert.equal(g.ppGameTick,tick);
+    assert.equal(g.ppscore,0);
+    ready=true;
+    const ticksPerSecond=vm.runInContext('Math.round(1000/ppGameTimerTickMS)',g);
+    for(let i=0;i<ticksPerSecond;i++) g.ppExecGameTick();
+    assert.equal(g.ppgametimer,clock-1);
+    ready=false;
+    for(let i=0;i<100;i++) g.ppExecGameTick();
+    assert.equal(g.ppgametimer,clock-1);
+    assert.equal(intervals.size,1);
+});
 test('same challenge repeats its queue; completed flood stores best by challenge and reset updates it immediately', () => {
     const {game:g,document,intervals}=loadGame();
     g.ppreset(2,-1);

@@ -18,6 +18,7 @@
 
         <WebView
             android:id="@+id/mainWebView"
+            android:background="@color/pump_bg"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 

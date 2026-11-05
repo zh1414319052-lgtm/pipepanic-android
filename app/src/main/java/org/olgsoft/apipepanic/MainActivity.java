@@ -209,6 +209,8 @@ public class MainActivity extends Activity {
 
         // Load webview with game
         mWebView = (WebView) findViewById(R.id.mainWebView);
+        // WebView otherwise paints white before its first HTML/compositor frame.
+        mWebView.setBackgroundColor(getResources().getColor(R.color.pump_bg));
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         // Debug-only inspection of this task's own WebView on the bound QA phone.
@@ -265,7 +267,7 @@ public class MainActivity extends Activity {
         battlemodeseed.setOnSeekBarChangeListener(optionListener);
         difficulty.setOnSeekBarChangeListener(optionListener);
         mWebView.loadUrl(GAME_URL);
-        drawerLayout.openDrawer(GravityCompat.START);
+        // Start on the 3D board. The drawer remains available from Menu/Back.
     }
 
     public void increase_battlemode(View v) {

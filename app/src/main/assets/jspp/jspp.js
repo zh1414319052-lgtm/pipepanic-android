@@ -637,6 +637,8 @@ function ppbreakpipes() {
 
 // main dispacher routine: gets called periodically
 function ppExecGameTick() {
+    // Loading or a lost GPU context must not consume play time behind the surface.
+    if (!ppCanRenderBoard()) return;
     if (levelMode && levelMode.tick()) return;
 
     ppGameTick++;

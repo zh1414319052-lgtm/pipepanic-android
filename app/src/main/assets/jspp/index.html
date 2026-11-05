@@ -5,6 +5,15 @@
 <head>
     <title>PipePanic</title>
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <!-- First paint must match Android's surface even before external files load. -->
+    <style>
+        html, body { background: #101D27; color: #F1F8FA; margin: 0; }
+        html { color-scheme: dark; }
+        [hidden], #board { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="pump-skin.css">
+    <link rel="stylesheet" href="pump-console.css">
 
     <!-- JavaScript Pipepanic.
     Copyright (C) 2004 Thunor <thunorsif@hotmail.com>
@@ -38,9 +47,6 @@
     <script src="pump-board.js"></script>
     <script src="pump-sounds.js"></script>
     <script src="pump-audio.js"></script>
-    <link rel="stylesheet" href="game.css">
-    <link rel="stylesheet" href="pump-skin.css">
-    <link rel="stylesheet" href="pump-console.css">
 </head>
 <body class="pump-skin" onresize="ppscale()">
 <header id="topBar">
@@ -269,7 +275,7 @@
 </main>
 <div id="help" style="display:none">
 <section id="help-en">
-    <h2>PipePanic · Haoke 0.21-haoke.32</h2>
+    <h2>PipePanic · Haoke 0.21-haoke.33</h2>
     <p><a href="pipepanic:updates">Check for Haoke updates</a> · <a href="https://www.haoke.org/">Haoke Tools</a></p>
     <p>Play offline. Signed version information is checked from haoke.org only while the main menu is idle. Boards, scores and device identifiers are not uploaded. The server can see ordinary connection information such as your IP address. Opening a release page is optional; updates are never installed automatically.</p>
 
@@ -379,7 +385,7 @@
     </p>
 </section>
 <section id="help-zh" hidden>
-    <h2>水管危机 · 浩科版 0.21-haoke.32</h2>
+    <h2>水管危机 · 浩科版 0.21-haoke.33</h2>
     <p><a href="pipepanic:updates">检查浩科版更新</a> · <a href="https://www.haoke.org/">浩科工具站</a></p>
     <p>游戏可离线游玩。仅在主菜单空闲时检查 haoke.org 的签名版本信息，不上传棋盘、分数或设备标识；服务器可见 IP 等普通连接信息。更新需自行点击版本页，不会自动安装。</p>
     <h2>玩法与制作人员</h2>
