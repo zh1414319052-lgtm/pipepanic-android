@@ -1,0 +1,9 @@
+<resources>
+    <style name="AppBaseTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorAccent">@color/pump_accent</item>
+        <item name="android:windowBackground">@color/pump_bg</item>
+        <item name="android:statusBarColor">@color/pump_bg</item>
+        <item name="android:navigationBarColor">@color/pump_bg</item>
+        <item name="android:colorControlNormal">#94AEB8</item>
+    </style>
+</resources>

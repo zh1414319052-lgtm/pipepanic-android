@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">水管危机</string>
+    <string name="toggle_fullscreen">全屏显示</string>
+    <string name="share_screenshot">分享截图</string>
+    <string name="clear_highscore">重置最高分</string>
+    <string name="clear_highscore_confirm">要重置当前游戏编号的最高分吗？</string>
+    <string name="about">玩法与制作人员</string>
+    <string name="startnewgame">开始新局</string>
+    <string name="welcome">水管危机</string>
+    <string name="battlemode">挑战编号：%1$s</string>
+    <string name="difficulty">难度：%1$s</string>
+    <string name="off">关闭</string>
+    <string name="challenge_hint">选相同编号即可获得相同管件顺序，无需联网。</string>
+    <string name="decrease_seed">上一个编号</string>
+    <string name="increase_seed">下一个编号</string>
+    <string name="resume">继续游戏</string>
+    <string name="cancel">取消</string>
+    <string name="reset">重置</string>
+    <string name="share_failed">无法分享截图。</string>
+    <string name="no_browser">没有可打开此链接的浏览器。</string>
+    <string-array name="difficulties">
+        <item>无限练习</item>
+        <item>简单</item>
+        <item>中等</item>
+        <item>困难</item>
+        <item>极难</item>
+    </string-array>
+    <string name="levels">关卡与玩法</string>
+</resources>

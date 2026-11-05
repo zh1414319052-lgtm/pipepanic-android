@@ -1,5 +1,11 @@
-<androidx.drawerlayout.widget.DrawerLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/display_surface"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pump_bg">
+
+<androidx.drawerlayout.widget.DrawerLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout">
@@ -24,46 +30,62 @@
         android:layout_width="300dp"
         android:layout_height="fill_parent"
         android:layout_gravity="start"
-        android:background="#cc796131"
+        android:background="@drawable/console_drawer"
         android:gravity="start">
 
         <LinearLayout
             android:id="@+id/message_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
+                android:minHeight="52dp"
+                android:id="@+id/welcome"
                 android:text="@string/welcome"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 android:textColor="@android:color/primary_text_dark" />
 
-            <ImageView
+
+            <Button style="@style/ConsolePrimaryButton"
+                android:id="@+id/resume_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:src="@mipmap/ic_launcher" />
+                android:onClick="resumeGame"
+                android:text="@string/resume"
+                android:visibility="gone" />
 
-            <Button
+            <Button style="@style/ConsoleButton"
                 android:id="@+id/newgame_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="newGame"
                 android:text="@string/startnewgame"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:minHeight="52dp"
+                android:enabled="false"
+                android:textSize="16sp" />
 
+            <Button style="@style/ConsoleButton"
+                android:id="@+id/levels_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:enabled="false"
+                android:onClick="openLevels"
+                android:text="@string/levels" />
 
             <TextView
                 android:id="@+id/difficultytext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="16sp"
                 android:textColor="@android:color/primary_text_dark"
                 android:gravity="center"
                 />
@@ -72,8 +94,10 @@
                 android:id="@+id/difficulty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="3"
-                android:padding="16dp"
+                android:max="4"
+                android:minHeight="48dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:layout_gravity="center"/>
 
 
@@ -85,14 +109,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="#aaFF403D"
+                android:background="@drawable/console_drawer"
                 >
 
                 <TextView
                     android:id="@+id/battlemodetext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="16sp"
                     android:textColor="@android:color/primary_text_dark"
                     android:gravity="center"
                     />
@@ -103,7 +127,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="99"
-                    android:padding="16dp"
+                    android:minHeight="48dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                     android:layout_gravity="center"/>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -111,20 +137,25 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     >
-                    <Button
+                    <Button style="@style/ConsoleButton"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="-"
+                        android:textSize="16sp"
+                        android:id="@+id/seed_minus"
+                        android:text="−"
+                        android:contentDescription="@string/decrease_seed"
                         android:gravity="center"
                         android:onClick="decrease_battlemode" />
-                    <Button
+                    <Button style="@style/ConsoleButton"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="16sp"
+                        android:id="@+id/seed_plus"
+                        android:layout_marginStart="8dp"
                         android:text="+"
+                        android:contentDescription="@string/increase_seed"
                         android:gravity="center"
                         android:onClick="increase_battlemode" />
 
@@ -132,6 +163,14 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/challenge_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@string/challenge_hint"
+                android:textColor="@android:color/white" />
 
             <CheckBox
                 android:id="@+id/fullscreen_checkbox"
@@ -141,36 +180,39 @@
                 android:checked="true"
                 android:onClick="applyFullScreen"
                 android:text="@string/toggle_fullscreen"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="16sp"
                 android:textColor="@android:color/primary_text_dark" />
 
-            <Button
+            <Button style="@style/ConsoleButton"
                 android:id="@+id/share_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="shareScreenShot"
                 android:text="@string/share_screenshot"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textSize="16sp" />
 
-            <Button
+            <Button style="@style/ConsoleButton"
                 android:id="@+id/clear_highscore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/clear_highscore"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:onClick="resetHighscore"
+                android:textSize="16sp" />
 
-            <Button
+            <Button style="@style/ConsoleButton"
                 android:id="@+id/about_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="showHelp"
                 android:text="@string/about"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:enabled="false"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
+</FrameLayout>

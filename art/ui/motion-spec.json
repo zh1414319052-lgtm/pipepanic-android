@@ -1,0 +1,101 @@
+{
+  "project": "pipepanic-console-028",
+  "revision": 1,
+  "designTokens": {
+    "bg": "#101D27",
+    "panel": "#192B37",
+    "well": "#10202B",
+    "ink": "#F1F8FA",
+    "muted": "#B6CBD4",
+    "line": "#5E7A8A",
+    "accent": "#77E8DD",
+    "accentInk": "#092A2B",
+    "brass": "#E0B977",
+    "tile": "#304D60",
+    "corner": 12,
+    "motion.page": 160,
+    "motion.press": 90
+  },
+  "motion": {
+    "version": 1,
+    "initial": "game",
+    "states": [
+      {
+        "id": "game",
+        "board": "game",
+        "name": "3D 对局",
+        "overrides": {}
+      },
+      {
+        "id": "levels",
+        "board": "levels",
+        "name": "关卡选择",
+        "overrides": {}
+      },
+      {
+        "id": "menu",
+        "board": "menu",
+        "name": "原生菜单",
+        "overrides": {}
+      }
+    ],
+    "transitions": [
+      {
+        "id": "show-levels",
+        "name": "show-levels",
+        "from": "game",
+        "to": "levels",
+        "node": "show-levels",
+        "trigger": "click",
+        "duration": 160,
+        "easing": "outCubic",
+        "pageEffect": "fade"
+      },
+      {
+        "id": "picker-back",
+        "name": "picker-back",
+        "from": "levels",
+        "to": "game",
+        "node": "picker-back",
+        "trigger": "click",
+        "duration": 160,
+        "easing": "outCubic",
+        "pageEffect": "fade"
+      },
+      {
+        "id": "level-2",
+        "name": "level-2",
+        "from": "levels",
+        "to": "game",
+        "node": "level-2",
+        "trigger": "click",
+        "duration": 160,
+        "easing": "outCubic",
+        "pageEffect": "fade"
+      },
+      {
+        "id": "show-menu",
+        "name": "show-menu",
+        "from": "game",
+        "to": "menu",
+        "node": "show-menu",
+        "trigger": "click",
+        "duration": 160,
+        "easing": "outCubic",
+        "pageEffect": "fade"
+      },
+      {
+        "id": "drawer-resume",
+        "name": "drawer-resume",
+        "from": "menu",
+        "to": "game",
+        "node": "drawer-resume",
+        "trigger": "click",
+        "duration": 160,
+        "easing": "outCubic",
+        "pageEffect": "fade"
+      }
+    ]
+  },
+  "boundary": "Web prototype is not native Android acceptance. Business logic stays in application state."
+}

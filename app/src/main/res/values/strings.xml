@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">PipePanic</string>
-    <string name="press_back_again_to_exit">Press back again to exit</string>
-	<string name="toggle_fullscreen">Fullscreen</string>
-    <string name="share_screenshot">Share a screenshot</string>
-    <string name="clear_highscore">Clear highscore</string>
-    <string name="clear_highscore_confirm">Are you sure you want to reset the high score?</string>
-    <string name="about">About</string>
-    <string name="startnewgame">Start a new game</string>
-    <string name="welcome">Welcome to PipePanic, a plumbers favorite game!</string>
-    <string name="battlemode">BATTLE MODE: \n %s</string>
-    <string name="difficulty">DIFFICULTY: \n %s</string>
-    <array name="difficulties">
-        <item>infinite play</item>
-        <item>easy</item>
-        <item>medium</item>
-        <item>hard</item>
-        <item>very hard</item>
-    </array>
+    <string name="toggle_fullscreen">Fullscreen</string>
+    <string name="share_screenshot">Share screenshot</string>
+    <string name="clear_highscore">Reset best score</string>
+    <string name="clear_highscore_confirm">Reset the best score for the current game number?</string>
+    <string name="about">How to play and credits</string>
+    <string name="startnewgame">New game</string>
+    <string name="welcome">PipePanic</string>
+    <string name="battlemode">Challenge number: %1$s</string>
+    <string name="difficulty">Difficulty: %1$s</string>
+    <string name="off">Off</string>
+    <string name="challenge_hint">Pick the same number to get the same pipe sequence. Works offline.</string>
+    <string name="decrease_seed">Previous number</string>
+    <string name="increase_seed">Next number</string>
+    <string name="resume">Resume game</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="share_failed">Could not share the screenshot.</string>
+    <string name="no_browser">No browser is available to open this link.</string>
+    <string-array name="difficulties">
+        <item>Unlimited</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Very hard</item>
+    </string-array>
+    <string name="levels">Levels and modes</string>
 </resources>

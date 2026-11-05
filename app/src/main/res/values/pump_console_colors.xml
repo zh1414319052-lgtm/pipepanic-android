@@ -1,0 +1,11 @@
+<resources>
+    <color name="pump_bg">#101D27</color>
+    <color name="pump_panel">#192B37</color>
+    <color name="pump_well">#10202B</color>
+    <color name="pump_ink">#F1F8FA</color>
+    <color name="pump_muted">#B6CBD4</color>
+    <color name="pump_line">#5E7A8A</color>
+    <color name="pump_accent">#77E8DD</color>
+    <color name="pump_accentink">#092A2B</color>
+    <color name="pump_brass">#E0B977</color>
+</resources>

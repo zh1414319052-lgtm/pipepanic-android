@@ -1,0 +1,253 @@
+{
+  "blender": "5.2.0 LTS",
+  "method": "Fixed-view Cycles appearance on real mesh geometry; separate realtime glass and cached-water geometry",
+  "view": "Filmic / Medium High Contrast / exposure 0",
+  "assets": [
+    {
+      "name": "p0",
+      "opaque_objects": 25,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p1",
+      "opaque_objects": 25,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p2",
+      "opaque_objects": 17,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p3",
+      "opaque_objects": 17,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p4",
+      "opaque_objects": 17,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p5",
+      "opaque_objects": 17,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p6",
+      "opaque_objects": 29,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "p7",
+      "opaque_objects": 29,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "p8",
+      "opaque_objects": 29,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "p9",
+      "opaque_objects": 29,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "p10",
+      "opaque_objects": 38,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "p11",
+      "opaque_objects": 17,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p12",
+      "opaque_objects": 17,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p13",
+      "opaque_objects": 10,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p14",
+      "opaque_objects": 10,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p15",
+      "opaque_objects": 10,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "p16",
+      "opaque_objects": 10,
+      "glass_objects": 1,
+      "width": 1.4
+    },
+    {
+      "name": "q2",
+      "opaque_objects": 17,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q3",
+      "opaque_objects": 17,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q4",
+      "opaque_objects": 17,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q5",
+      "opaque_objects": 17,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q6",
+      "opaque_objects": 28,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q7",
+      "opaque_objects": 28,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q8",
+      "opaque_objects": 28,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q9",
+      "opaque_objects": 28,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q10",
+      "opaque_objects": 37,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q11",
+      "opaque_objects": 17,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q12",
+      "opaque_objects": 17,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q13",
+      "opaque_objects": 10,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q14",
+      "opaque_objects": 10,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q15",
+      "opaque_objects": 10,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "q16",
+      "opaque_objects": 10,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "tile0",
+      "opaque_objects": 1,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "tile1",
+      "opaque_objects": 1,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "tile2",
+      "opaque_objects": 1,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "tile3",
+      "opaque_objects": 1,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "wall",
+      "opaque_objects": 22,
+      "glass_objects": 0,
+      "width": 1.4
+    },
+    {
+      "name": "deck",
+      "opaque_objects": 2,
+      "glass_objects": 0,
+      "width": 2.1
+    },
+    {
+      "name": "rail0",
+      "opaque_objects": 4,
+      "glass_objects": 0,
+      "width": 2.1
+    },
+    {
+      "name": "rail1",
+      "opaque_objects": 4,
+      "glass_objects": 0,
+      "width": 2.1
+    },
+    {
+      "name": "bolt",
+      "opaque_objects": 2,
+      "glass_objects": 0,
+      "width": 0.22
+    }
+  ]
+}

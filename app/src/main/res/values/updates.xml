@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="updates_title">Version updates</string>
+    <string name="updates_check">Check for Haoke updates</string>
+    <string name="updates_privacy">Checks signed version metadata from haoke.org while the game home is idle in the foreground. Boards, scores, and device identifiers are not uploaded. The server can see ordinary connection information such as your IP address.</string>
+    <string name="updates_checking">Checking for updates…</string>
+    <string name="updates_available">Version %1$s is available</string>
+    <string name="updates_view">View version</string>
+    <string name="updates_later">Later</string>
+    <string name="updates_ignore">Ignore this version</string>
+    <string name="updates_current">No compatible update is available.</string>
+    <string name="updates_unregistered">Updates are not yet available for this installed build.</string>
+    <string name="updates_unavailable">The update check could not be verified. Please try again later.</string>
+    <string name="updates_storage_failed">Could not save the update reminder preference.</string>
+    <string name="updates_browser_unavailable">No browser is available to open the version page.</string>
+    <string name="haoke_website">Haoke Tools</string>
+</resources>

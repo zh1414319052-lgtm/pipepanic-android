@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 
-<html style="height: 100%;">
+<html lang="en" style="height: 100%;">
 <head>
-    <title>Thunor: JavaScript Pipepanic</title>
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+    <title>PipePanic</title>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 
     <!-- JavaScript Pipepanic.
     Copyright (C) 2004 Thunor <thunorsif@hotmail.com>
@@ -29,343 +29,255 @@
    <script language="JavaScript" src="mersenne-twister.js" type="text/javascript"></script>
    <script language="JavaScript" src="jspp.js" type="text/javascript"></script>
 
-    <style type="text/css">
-
-        * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none; /* Disable selection/copy in UIWebView */
-            box-sizing: border-box;
-        }
-
-        .digit{
-            height:100%;
-            /*width:calc(98% / 6);*/
-            width:16.3%;
-            float:left;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        .number{
-            width:95%;
-            /*height:calc(98% / 6);*/
-            height:16.3%;
-            margin: 0 auto;
-        }
-
-        .board {
-            outline-style: solid;
-            outline-width: 0px;
-            outline-color: #455372;
-            width:80%;
-            height:100%;
-            float:left;
-            background-repeat: repeat;
-            background-position:center;
-            background-image: url('images/jpipepanictile.png');
-            background-size: 1% 1%;
-            padding-top: 0px;
-            padding-right: 0px;
-            padding-bottom: 0px;
-            padding-left: 0px;
-            margin: 0 auto;
-        }
-
-        .controlarea {
-            outline-style: solid;
-            outline-width: 0px;
-            outline-color: #455372;
-            border-color: #FFCC66;
-            height:100%;
-            width:20%;
-            float:left;
-        }
-
-        .boardsquare,.previewsquare{
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position:center;
-            outline-style: solid;
-            outline-width: thin;
-            outline-color: #FFCC66;
-        }
-
-        .boardrow {
-            width: 100%;
-            height:9.09%;
-        }
-
-        .boardsquare{
-            height:100%;
-            /*width:calc(100% / 11);*/
-            width:9.09%;
-            float:left;
-        }
-
-        .heading{
-            height:5%;
-            width:95%;
-            margin: 0 auto;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position:center;
-        }
-
-        .previewsquare{
-            /*padding-bottom: calc(98% / 5);*/
-            padding-bottom: 19.6%;
-            /*width:calc(98% / 5);*/
-            width:19.6%;
-            float:left;
-            margin: 1%;
-            outline-color: #000000;
-            outline-style: dotted;
-        }
-
-        .headline{
-            position:relative;
-            top:0px;
-            left:0px;
-            bottom:0px;
-            right:0px;
-            color: rgba(255,255,255,0.4);
-            font-size:xx-large;
-            font-weight: bold;
-            font-family: "sans-serif";
-            text-align: center;
-            z-index: 10;
-            height:0px;
-            overflow:visible;
-            pointer-events:none;
-            background:none !important;
-        }
-
-        .scoreMarker{
-          position:absolute;
-          border-radius: 50% 50% 50% 0;
-          color:white;
-          opacity: 0.7;
-          pointer-events:none;
-          background:color !important;
-        font-weight: bold;
-        font-family: "sans-serif";
-        text-align: center;
-        }
-    </style>
-
+    <script src="game-text.js"></script>
+    <script src="levels.js"></script>
+    <script src="level-play.js"></script>
+    <script src="fidelity-assets.js"></script>
+    <script src="fidelity-water.js"></script>
+    <script src="fidelity-runtime.js"></script>
+    <script src="pump-board.js"></script>
+    <script src="pump-sounds.js"></script>
+    <script src="pump-audio.js"></script>
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="pump-skin.css">
+    <link rel="stylesheet" href="pump-console.css">
 </head>
-
-<body style="background-color: #FFCC66; height:100%; width:100%; margin:0% auto; border-style:solid;border-width:thick; border-color:transparent;" onresize="ppscale()">
+<body class="pump-skin" onresize="ppscale()">
+<header id="topBar">
+    <div class="pump-brand">
+        <div class="pump-eyebrow" aria-hidden="true">PIPE PANIC</div>
+        <h1 data-text="name">PipePanic</h1>
+    </div>
+    <div class="top-actions">
+    <button type="button" class="button" id="soundSwitch" aria-pressed="true">Sound on</button>
+    <button type="button" class="button" data-text="levelMenu" onclick="levelMode.openPicker()">Levels</button>
+    <a id="menuButton" class="button" href="pipepanic:menu" data-text="menu">Menu</a>
+    </div>
+</header>
+<p id="renderNotice" data-text="renderLoading" role="status">Loading 3D…</p>
+<section id="levelPicker" hidden>
+    <div class="level-picker-title">
+        <h2 data-text="levelMenu">Levels</h2>
+        <button type="button" class="button" data-text="levelBack" onclick="levelMode.closePicker()">Back</button>
+    </div>
+    <div id="levelTabs"></div>
+    <p id="modeDescription"></p>
+    <p id="dailyInfo" hidden></p>
+    <div id="levelList"></div>
+    <button type="button" id="levelContinue" class="button" onclick="levelMode.restore()" hidden>Continue level</button>
+</section>
+<main id="game">
 <div class="controlarea" id="controlarea">
-
-    <div class="heading" style="background-image: url('images/highscore.png');"></div>
-    <div class="number">
-        <div class="digit" id="hscoresign"></div>
-        <div class="digit" id="hscore1000"></div>
-        <div class="digit" id="hscore100"></div>
-        <div class="digit" id="hscore10"></div>
-        <div class="digit" id="hscore1"></div>
+    <div id="levelHud" hidden>
+        <strong id="levelTitle"></strong>
+        <div id="levelGoal"></div>
+        <div id="levelRemaining"></div>
+        <div id="levelClock" hidden></div>
     </div>
-
-    <div class="heading" style="background-image: url('images/score.png')" onclick="ppdebugsecretbutton()"></div>
-    <div class="number" onclick="ppdebugsecretbutton()">
-        <div class="digit" id="scoresign"></div>
-        <div class="digit" id="score1000"></div>
-        <div class="digit" id="score100"></div>
-        <div class="digit" id="score10"></div>
-        <div class="digit" id="score1"></div>
+    <div class="stats" id="classicStats">
+        <div class="stat"><span data-text="score">Score</span><strong id="score">0</strong></div>
+        <div class="stat"><span data-text="best">Best</span><strong id="hscore">0</strong></div>
+        <div class="stat"><span data-text="time">Time</span><strong id="timer1">200</strong></div>
     </div>
-
-    <div class="heading" id="timerheading" style="background-image: url('images/time.png')" onclick="ppToggleScoreIndication()"></div>
-    <div class="number" onclick="ppToggleScoreIndication()">
-        <div class="digit"></div>
-        <div class="digit" id="timersign"></div>
-        <div class="digit" id="timer100"></div>
-        <div class="digit" id="timer10"></div>
-        <div class="digit" id="timer1"></div>
+    <div id="pipeControls">
+    <div class="queue">
+        <span class="queue-label" data-text="queue">Queue</span>
+        <div class="queue-pipes">
+            <div class="previewsquare" id="preview3"></div>
+            <div class="previewsquare" id="preview2"></div>
+            <div class="previewsquare" id="preview1"></div>
+            <div class="previewsquare" id="preview0" aria-labelledby="nextLabel"></div>
+            <canvas id="pumpQueue" aria-hidden="true"></canvas>
+        </div>
+        <span id="nextLabel" data-text="next">Next pipe</span>
     </div>
-
-    <div class="number">
-        <div class="previewsquare" id="preview3" style="background-color:#BF9D5B;"></div>
-        <div class="previewsquare" id="preview2" style="background-color:#D9A640;"></div>
-        <div class="previewsquare" id="preview1" style="background-color:#FFBE37;"></div>
-        <div class="previewsquare" id="preview0" style="background-color:#FFCC67;"></div>
+    <div class="pipe-actions">
+        <button id="fillButton" class="button" data-text="fill" onclick="ppfillpipesnow()">Fill pipes</button>
+        <button type="button" id="hintSwitch" class="button" data-text="hintSwitch" aria-pressed="false">Hint</button>
     </div>
-
-    <div class="heading" onclick="ppfillpipesnow()" style="background-image: url('images/fillpipes.png'); width:100%; height:10vh"></div>
-
-   </div>
-
-
-<div id="board" class="board">
+    <p id="placementAdvice" role="status" hidden></p>
+    </div>
+</div>
+<div id="boardStage">
+<canvas id="pumpBoard" role="img" aria-label="3D pipe board"></canvas>
+<div id="pumpLabels" aria-hidden="true"></div>
+<div id="placementMarker" aria-hidden="true" hidden></div>
+<div id="pumpTapHint" role="status" hidden></div>
+<div id="board" class="board" hidden aria-hidden="true">
     <div class="boardrow">
-        <div id="headline" class="headline"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1000"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1001"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1002"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1003"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1004"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1005"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1006"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1007"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1008"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1009"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board1010"></div>
+        <div class="boardsquare" id="board1000"></div>
+        <div class="boardsquare" id="board1001"></div>
+        <div class="boardsquare" id="board1002"></div>
+        <div class="boardsquare" id="board1003"></div>
+        <div class="boardsquare" id="board1004"></div>
+        <div class="boardsquare" id="board1005"></div>
+        <div class="boardsquare" id="board1006"></div>
+        <div class="boardsquare" id="board1007"></div>
+        <div class="boardsquare" id="board1008"></div>
+        <div class="boardsquare" id="board1009"></div>
+        <div class="boardsquare" id="board1010"></div>
     </div>
 
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0900"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0901"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0902"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0903"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0904"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0905"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0906"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0907"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0908"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0909"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0910"></div>
+        <div class="boardsquare" id="board0900"></div>
+        <div class="boardsquare" id="board0901"></div>
+        <div class="boardsquare" id="board0902"></div>
+        <div class="boardsquare" id="board0903"></div>
+        <div class="boardsquare" id="board0904"></div>
+        <div class="boardsquare" id="board0905"></div>
+        <div class="boardsquare" id="board0906"></div>
+        <div class="boardsquare" id="board0907"></div>
+        <div class="boardsquare" id="board0908"></div>
+        <div class="boardsquare" id="board0909"></div>
+        <div class="boardsquare" id="board0910"></div>
     </div>
 
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0800"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0801"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0802"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0803"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0804"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0805"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0806"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0807"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0808"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0809"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0810"></div>
+        <div class="boardsquare" id="board0800"></div>
+        <div class="boardsquare" id="board0801"></div>
+        <div class="boardsquare" id="board0802"></div>
+        <div class="boardsquare" id="board0803"></div>
+        <div class="boardsquare" id="board0804"></div>
+        <div class="boardsquare" id="board0805"></div>
+        <div class="boardsquare" id="board0806"></div>
+        <div class="boardsquare" id="board0807"></div>
+        <div class="boardsquare" id="board0808"></div>
+        <div class="boardsquare" id="board0809"></div>
+        <div class="boardsquare" id="board0810"></div>
     </div>
 
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0700"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0701"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0702"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0703"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0704"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0705"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0706"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0707"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0708"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0709"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0710"></div>
+        <div class="boardsquare" id="board0700"></div>
+        <div class="boardsquare" id="board0701"></div>
+        <div class="boardsquare" id="board0702"></div>
+        <div class="boardsquare" id="board0703"></div>
+        <div class="boardsquare" id="board0704"></div>
+        <div class="boardsquare" id="board0705"></div>
+        <div class="boardsquare" id="board0706"></div>
+        <div class="boardsquare" id="board0707"></div>
+        <div class="boardsquare" id="board0708"></div>
+        <div class="boardsquare" id="board0709"></div>
+        <div class="boardsquare" id="board0710"></div>
     </div>
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0600"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0601"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0602"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0603"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0604"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0605"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0606"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0607"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0608"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0609"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0610"></div>
+        <div class="boardsquare" id="board0600"></div>
+        <div class="boardsquare" id="board0601"></div>
+        <div class="boardsquare" id="board0602"></div>
+        <div class="boardsquare" id="board0603"></div>
+        <div class="boardsquare" id="board0604"></div>
+        <div class="boardsquare" id="board0605"></div>
+        <div class="boardsquare" id="board0606"></div>
+        <div class="boardsquare" id="board0607"></div>
+        <div class="boardsquare" id="board0608"></div>
+        <div class="boardsquare" id="board0609"></div>
+        <div class="boardsquare" id="board0610"></div>
     </div>
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0500"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0501"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0502"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0503"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0504"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0505"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0506"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0507"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0508"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0509"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0510"></div>
+        <div class="boardsquare" id="board0500"></div>
+        <div class="boardsquare" id="board0501"></div>
+        <div class="boardsquare" id="board0502"></div>
+        <div class="boardsquare" id="board0503"></div>
+        <div class="boardsquare" id="board0504"></div>
+        <div class="boardsquare" id="board0505"></div>
+        <div class="boardsquare" id="board0506"></div>
+        <div class="boardsquare" id="board0507"></div>
+        <div class="boardsquare" id="board0508"></div>
+        <div class="boardsquare" id="board0509"></div>
+        <div class="boardsquare" id="board0510"></div>
     </div>
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0400"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0401"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0402"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0403"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0404"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0405"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0406"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0407"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0408"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0409"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0410"></div>
+        <div class="boardsquare" id="board0400"></div>
+        <div class="boardsquare" id="board0401"></div>
+        <div class="boardsquare" id="board0402"></div>
+        <div class="boardsquare" id="board0403"></div>
+        <div class="boardsquare" id="board0404"></div>
+        <div class="boardsquare" id="board0405"></div>
+        <div class="boardsquare" id="board0406"></div>
+        <div class="boardsquare" id="board0407"></div>
+        <div class="boardsquare" id="board0408"></div>
+        <div class="boardsquare" id="board0409"></div>
+        <div class="boardsquare" id="board0410"></div>
     </div>
 
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0300"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0301"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0302"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0303"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0304"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0305"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0306"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0307"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0308"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0309"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0310"></div>
+        <div class="boardsquare" id="board0300"></div>
+        <div class="boardsquare" id="board0301"></div>
+        <div class="boardsquare" id="board0302"></div>
+        <div class="boardsquare" id="board0303"></div>
+        <div class="boardsquare" id="board0304"></div>
+        <div class="boardsquare" id="board0305"></div>
+        <div class="boardsquare" id="board0306"></div>
+        <div class="boardsquare" id="board0307"></div>
+        <div class="boardsquare" id="board0308"></div>
+        <div class="boardsquare" id="board0309"></div>
+        <div class="boardsquare" id="board0310"></div>
     </div>
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0200"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0201"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0202"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0203"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0204"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0205"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0206"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0207"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0208"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0209"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0210"></div>
+        <div class="boardsquare" id="board0200"></div>
+        <div class="boardsquare" id="board0201"></div>
+        <div class="boardsquare" id="board0202"></div>
+        <div class="boardsquare" id="board0203"></div>
+        <div class="boardsquare" id="board0204"></div>
+        <div class="boardsquare" id="board0205"></div>
+        <div class="boardsquare" id="board0206"></div>
+        <div class="boardsquare" id="board0207"></div>
+        <div class="boardsquare" id="board0208"></div>
+        <div class="boardsquare" id="board0209"></div>
+        <div class="boardsquare" id="board0210"></div>
     </div>
 
 
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0100"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0101"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0102"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0103"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0104"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0105"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0106"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0107"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0108"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0109"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0110"></div>
+        <div class="boardsquare" id="board0100"></div>
+        <div class="boardsquare" id="board0101"></div>
+        <div class="boardsquare" id="board0102"></div>
+        <div class="boardsquare" id="board0103"></div>
+        <div class="boardsquare" id="board0104"></div>
+        <div class="boardsquare" id="board0105"></div>
+        <div class="boardsquare" id="board0106"></div>
+        <div class="boardsquare" id="board0107"></div>
+        <div class="boardsquare" id="board0108"></div>
+        <div class="boardsquare" id="board0109"></div>
+        <div class="boardsquare" id="board0110"></div>
     </div>
 
     <div class="boardrow">
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0000"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0001"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0002"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0003"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0004"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0005"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0006"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0007"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0008"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0009"></div>
-        <div class="boardsquare" onclick="ppprocessboardclick(this.id)" id="board0010"></div>
+        <div class="boardsquare" id="board0000"></div>
+        <div class="boardsquare" id="board0001"></div>
+        <div class="boardsquare" id="board0002"></div>
+        <div class="boardsquare" id="board0003"></div>
+        <div class="boardsquare" id="board0004"></div>
+        <div class="boardsquare" id="board0005"></div>
+        <div class="boardsquare" id="board0006"></div>
+        <div class="boardsquare" id="board0007"></div>
+        <div class="boardsquare" id="board0008"></div>
+        <div class="boardsquare" id="board0009"></div>
+        <div class="boardsquare" id="board0010"></div>
     </div>
 
 </div>
-<div id="ppdebug" style="display:none;font-family:'Lucida Console', monospace;font-size:small;   clear:both;"></div>
-
-<div id="ui" style="display:none">
-    <button onclick="ppreset(1,1);">RESET</button>
-    <button onclick="javascript:help(1);">HELP</button>
 </div>
-
+<footer id="gameFoot">
+    <div class="legend" id="classicLegend"><span class="inlet" data-text="inlet">Inlet</span><span class="outlet" data-text="outlet">Outlet</span><span id="headline"></span></div>
+    <div id="gameStatus" role="status"></div>
+    <div id="levelActions" hidden>
+        <button type="button" id="levelUndo" class="button" data-text="levelUndo" onclick="levelMode.undo()">Undo</button>
+        <button type="button" id="levelRetry" class="button" data-text="levelRetry" onclick="levelMode.retry()">Retry</button>
+        <button type="button" id="levelNext" class="button" data-text="levelNext" onclick="levelMode.next()" hidden>Next level</button>
+    </div>
+</footer>
+</main>
 <div id="help" style="display:none">
+<section id="help-en">
+    <h2>PipePanic · Haoke 0.21-haoke.32</h2>
+    <p><a href="pipepanic:updates">Check for Haoke updates</a> · <a href="https://www.haoke.org/">Haoke Tools</a></p>
+    <p>Play offline. Signed version information is checked from haoke.org only while the main menu is idle. Boards, scores and device identifiers are not uploaded. The server can see ordinary connection information such as your IP address. Opening a release page is optional; updates are never installed automatically.</p>
 
     <h2>
          About PipePanic
     </h2>
 
-    <h3> A plumbers favorite game!</h3>
+    <h3> A plumber's favorite game!</h3>
 
     PipePanic is about connecting pipes in a hurry before any water spills!
 
@@ -379,7 +291,7 @@
     Get the source from <a
         href="https://github.com/rnauber/pipepanic-android/blob/HEAD/README.md">GitHub</a>!
 
-    The licence of the original game is: <a
+    The original game is licensed under <a
         href="http://www.gnu.org/licenses/gpl.txt">GNU GPL v2</a>
     and <a href="http://artlibre.org/licence/lal/en/">Free Art Licence</a>
     and pipepanic-android is licensed under the
@@ -392,7 +304,7 @@
 
     <p>
         Join the green start-pipe and red end-pipe together using the pieces
-        given to you via the preview bar on the left. The pipe shown in the
+        given to you via the preview bar. The pipe shown in the
         rightmost square is the next available pipe for placement upon the
         game board. Once the timer reaches zero or you click on 'Fill Pipes'
         the game board is cleared of any
@@ -413,8 +325,7 @@
         are flooded.
     </p>
     <p>
-        If the difficulty is set to "infinite", the timer won't stop before you click "Fill pipes".
-        Thus the negative time will remove points.
+        If the difficulty is set to "infinite", water only starts when you tap "Fill pipes". If the timer goes negative, that time counts against your score.
     </p>
 
     <h3>Scoring</h3>
@@ -466,6 +377,28 @@
         exact same sequence of pipes. So no one can blame a low score on just
         bad luck :)
     </p>
+</section>
+<section id="help-zh" hidden>
+    <h2>水管危机 · 浩科版 0.21-haoke.32</h2>
+    <p><a href="pipepanic:updates">检查浩科版更新</a> · <a href="https://www.haoke.org/">浩科工具站</a></p>
+    <p>游戏可离线游玩。仅在主菜单空闲时检查 haoke.org 的签名版本信息，不上传棋盘、分数或设备标识；服务器可见 IP 等普通连接信息。更新需自行点击版本页，不会自动安装。</p>
+    <h2>玩法与制作人员</h2>
+    <p>把绿色入口接到红色出口。管件预览最右边是下一件，点棋盘就会按顺序放下。</p>
+    <p>限时局倒计时结束会自动灌水，也可以提前点「灌水」。灌水前会移除未接通的管件；碰到漏口或破损管件，水流会停下。</p>
+    <h3>难度与挑战</h3>
+    <p>无限练习不会自动灌水，但计时会继续，超时后手动灌水会扣分。中等到极难模式的管件可能破损，灌水前可覆盖更换。</p>
+    <p>选相同的挑战编号即可用同样的管件顺序比拼分数，无需联网。</p>
+    <h3>计分</h3>
+    <ul>
+        <li>放置 +10，覆盖或未接通的管件 −10。</li>
+        <li>提前灌水时，每剩 1 秒 +5；无限练习超时则每秒 −5。</li>
+        <li>每流过一件管件 +50；流过已修好的破损管件额外 +100。</li>
+        <li>水流抵达红色出口 +250。</li>
+    </ul>
+    <h3>关于 PipePanic</h3>
+    <p>原作由 <a href="http://www.users.waitrose.com/~thunor/jspp/index.html">Thunor</a> 创作。Android 移植由 rnauber 维护，基于 <a href="https://github.com/uberspot/2048-android">Paul Sarbinowski（uberspot）的 2048-android</a>。</p>
+    <p><a href="https://github.com/rnauber/pipepanic-android">上游源码</a>。游戏代码按 <a href="https://www.gnu.org/licenses/gpl-2.0.html">GPL v2 或更高版本</a>许可，美术素材采用 <a href="https://artlibre.org/licence/lal/en/">Free Art License</a>，Android 外壳采用 <a href="https://github.com/rnauber/pipepanic-android/blob/master/LICENSE">MIT</a>。</p>
+</section>
 </div>
 
 
@@ -474,6 +407,8 @@
 <script language="JavaScript" type="text/javascript">
 		ppreset();
 		ppscale();
+        PumpBoard.init();
+        PumpAudio.init();
 </script>
 <noscript></noscript>
 

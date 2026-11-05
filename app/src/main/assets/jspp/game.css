@@ -1,0 +1,64 @@
+@font-face { font-family: PipeNoto; src: url("PipeNoto.ttf") format("truetype"); }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; margin: 0; }
+body { background: #fff5df; color: #36271c; padding: 12px 10px 16px; font: 14px PipeNoto, sans-serif; }
+#topBar, #game, #help { max-width: 760px; margin: 0 auto; }
+#topBar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+h1 { font-size: 22px; margin: 0 12px 0 0; }
+.button { display: inline-block; min-height: 48px; padding: 10px 14px; font: inherit; border: 1px solid #79512d; border-radius: 10px; color: #422913; background: #ffdc96; text-decoration: none; text-align: center; }
+#menuButton { padding-top: 12px; }
+#fillButton { width: 100%; background: #125662; color: #fff; border-color: #125662; }
+#fillButton:disabled { color: #4e5656; background: #d6dedc; border-color: #bac8c5; }
+.stats { display: flex; background: #f8e4bb; border-radius: 12px; padding: 6px 2px; }
+.stat { flex: 1; min-width: 0; text-align: center; }
+.stat span { display: block; color: #674c34; font-size: .85em; }
+.stat strong { display: block; font-size: 1.3em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.queue { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; min-height: 40px; }
+.queue-label, #nextLabel { font-size: .83em; color: #5c432e; text-align: center; }
+#nextLabel { color: #07555f; }
+.queue-pipes { display: flex; margin: 0 5px; }
+.previewsquare { width: 27px; height: 27px; margin: 0 2px; border: 1px solid #92703f; background: #ffe8b3 center / 100% 100% no-repeat; }
+#preview0 { border: 2px solid #125662; outline: 2px solid #125662; }
+#boardStage { margin: 10px auto 0; position: relative; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; color: #5c432e; }
+.inlet::before, .outlet::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; }
+.inlet::before { background: #228744; }
+.outlet::before { background: #ba4236; }
+#gameStatus { margin-top: 4px; min-height: 1.5em; font-size: .92em; }
+#help { line-height: 1.6; padding: 0 4px; }
+#help a { color: #125662; }
+.scoreMarker { position: absolute; color: white; border-radius: 6px; pointer-events: none; text-align: center; animation: scoreFade .65s ease-out both; }
+@keyframes scoreFade { to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .scoreMarker { animation: none; } }
+@media (orientation: landscape) and (min-width: 520px) {
+    #game { display: grid; grid-template-columns: minmax(160px, 220px) auto; align-items: start; justify-content: center; gap: 8px 14px; }
+    #boardStage { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
+    #gameFoot { grid-column: 1; }
+    #topBar { margin-bottom: 8px; }
+    .queue-label { display: none; }
+}
+/* The original square board and level boards share the same pipe sprites. */
+.top-actions, .level-picker-title { display: flex; gap: 6px; align-items: center; }
+.top-actions .button { padding-inline: 10px; }
+#levelPicker { max-width: 760px; margin: 12px auto; padding: 16px; border-radius: 12px; background: #f8e4bb; }
+.level-picker-title { justify-content: space-between; }
+.level-picker-title h2 { margin: 0; }
+#levelTabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.level-tab[aria-pressed="true"] { background: #125662; color: white; border-color: #125662; }
+#modeDescription { line-height: 1.55; }
+#levelList { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.level-today { grid-column: 1 / -1; }
+.level-select { background: #fff5df; }
+.level-select.is-complete { background: #e3f0db; color: #154f31; border-color: #2e7950; }
+#levelContinue { width: 100%; margin-top: 12px; background: #fff5df; }
+#levelHud { background: #f8e4bb; border-radius: 10px; padding: 8px 10px; line-height: 1.5; }
+#levelTitle { display: block; font-size: 1.12em; }
+#levelGoal { color: #674c34; }
+#levelRemaining, #levelClock { font-size: .88em; }
+#levelActions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+#levelActions .button { min-width: 72px; }
+.button:disabled { opacity: .58; }
+#gameStatus { margin-top: 9px; }
+
+

@@ -1,0 +1,115 @@
+#pumpBoard, #pumpLabels, #pumpQueue, .pump-eyebrow { display: none; }
+#boardStage > .board { display: none; }
+#boardStage.has3d > #pumpBoard, #boardStage.has3d > #pumpLabels {
+    display: block; position: absolute; inset: 0; width: 100%; height: 100%;
+}
+#pumpBoard { touch-action: manipulation; filter: drop-shadow(0 9px 6px rgba(2, 10, 16, .55)); }
+#pumpLabels, #pumpQueue { pointer-events: none; }
+#pumpLabels span {
+    position: absolute; transform: translate(-50%,-50%);
+    font-weight: 800; line-height: 1; text-shadow: 0 1px 3px #071826;
+}
+.pump-inlet { color: #bbf6c9; }
+.pump-outlet { color: #ffc4a9; }
+.pump-fault { color: #ffe4b6; background: #95382f; padding: 2px 3px; border-radius: 4px; }
+#soundSwitch { min-width: 41px; }
+#renderNotice { max-width:760px; margin:6px auto; color:#ffc58c; font-size:12px; }
+.pump-skin {
+    color: #edf6f4;
+    background: radial-gradient(ellipse at 50% 48%, #304655 0%, #172732 56%, #09151f 94%);
+}
+.pump-skin .pump-eyebrow {
+    display: block; font-size: .55rem; letter-spacing: .075em; font-weight: 700;
+    white-space: nowrap; color: #abc8cf; margin-bottom: 2px;
+}
+.pump-skin h1 { color: #f3f8f3; font-size: 1.53rem; margin-right: 4px; line-height: 1.22; }
+.pump-skin #topBar { gap: 5px; margin-bottom: 11px; }
+.pump-skin .top-actions { gap: 4px; }
+.pump-skin .top-actions .button { min-height: 43px; padding: 9px 7px; }
+.pump-skin .button {
+    border-color: #4d7885; background: #102f40; color: #edf7f7; border-radius: 9px;
+}
+.pump-skin #soundSwitch, .pump-skin #nextLabel { color: #9cf1e3; }
+.pump-skin #fillButton, .pump-skin #levelNext {
+    background: linear-gradient(#256d76,#14444f); color: #d9ffff;
+    border-color: #72d8dd; box-shadow: inset 0 0 0 2px #153641;
+}
+.pump-skin #fillButton:disabled { background: #25404b; border-color: #4a6d78; color: #bad0d4; }
+.pump-skin #levelHud, .pump-skin .stats, .pump-skin #levelPicker {
+    background: #0d2737; border: 1px solid #3b6372;
+}
+.pump-skin #levelTitle { color: #e7f6f3; }
+.pump-skin #levelRemaining, .pump-skin #levelClock { color: #99ddd7; }
+.pump-skin #levelGoal, .pump-skin .stat span, .pump-skin .legend,
+.pump-skin .queue-label, .pump-skin #help a { color: #b5d2d7; }
+.pump-skin .inlet::before { background: #63dc92; }
+.pump-skin .outlet::before { background: #f9846c; }
+.pump-skin .level-tab[aria-pressed="true"] { background: #236374; border-color: #77c1c8; }
+.pump-skin .level-select.is-complete { background: #163f37; color: #a4efbc; border-color: #4b9274; }
+.pump-skin #levelContinue { background: #204c5c; border-color: #6395a0; }
+.pump-skin #pipeControls {
+    background: linear-gradient(#1e3241,#0d1c28); border: 1px solid #526575;
+    border-radius: 12px; padding: 5px 7px 7px;
+    box-shadow: inset 0 0 0 2px #0a1822, 0 4px 8px #080e15;
+}
+.pump-skin .queue { margin: 4px 1px 8px; gap: 3px; }
+.pump-skin .queue-pipes { position: relative; margin: 0 1px; }
+.pump-skin .previewsquare {
+    width: 35px; height: 38px; border-radius: 7px; background-color: #142430;
+    border-color: #637988; box-shadow: inset 0 0 0 2px #0c171f;
+}
+.pump-skin #preview0 { outline: none; border: 1px solid #e0b977; background-color: #212931; }
+.has3d-queue #pumpQueue { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+.pump-skin #gameStatus { color: #d9edef; margin-top: 7px; }
+.pump-skin #gameStatus.pump-result-win, .pump-skin #gameStatus.pump-result-issue {
+    border: 1px solid #4d9b89; border-radius: 9px; background: #143c3d; color: #c2f5df; padding: 8px 10px;
+}
+.pump-skin #gameStatus.pump-result-issue { border-color: #9d625c; background: #402c35; color: #ffdbd2; }
+.pump-skin #levelActions { margin-top: 5px; }
+.pump-skin .scoreMarker { border-radius: 6px; font-weight: 750; }
+/* The HUD, queue, level picker and results use the same Cycles metal panels.
+   Nine-slice borders preserve machined corners across all board sizes. */
+.pump-skin .stats, .pump-skin #levelHud, .pump-skin #pipeControls,
+.pump-skin #levelPicker, .pump-skin #help {
+    border: 2px solid transparent;
+    border-image: url('fidelity-ui/console-panel.png') 48 fill / 10px / 0 stretch;
+    background: transparent;
+}
+.pump-skin #levelHud { padding: 11px 13px; }
+.pump-skin .stats { padding: 9px 4px; }
+.pump-skin #pipeControls { padding: 9px 10px 10px; }
+.pump-skin #levelPicker { padding: 19px; }
+.pump-skin #help {
+    padding: 16px;
+    border-image: url('fidelity-ui/console-panel.png') 48 / 10px / 0 stretch;
+    background: radial-gradient(ellipse at top, #243642, #101f2a);
+}
+.pump-skin #fillButton, .pump-skin #levelNext {
+    border: 2px solid transparent;
+    border-image: url('fidelity-ui/console-action.png') 52 fill / 10px / 0 stretch;
+    background: transparent;
+    text-shadow: 0 1px 2px #051319;
+    box-shadow: none;
+}
+.pump-skin #fillButton:disabled { filter: saturate(.4); }
+@media (orientation: portrait), (max-width: 519px) {
+    .pump-skin #game { display: flex; flex-direction: column; }
+    .pump-skin #controlarea { display: contents; }
+    .pump-skin #boardStage { order: 1; margin-top: 0; }
+    .pump-skin #pipeControls { order: 2; margin-top: 3px; }
+    .pump-skin #gameFoot { order: 3; }
+    .pump-skin .previewsquare { width: clamp(30px,10vw,50px); height: clamp(34px,10.6vw,54px); }
+}
+@media (orientation: landscape) and (min-width: 520px) {
+    .pump-skin { padding-top: 8px; padding-bottom: 8px; }
+    .pump-skin #topBar { margin-bottom: 6px; }
+    .pump-skin #game { row-gap: 3px; }
+    .pump-skin #levelHud { padding: 5px 8px; line-height: 1.38; }
+    .pump-skin .queue-label { display: none; }
+    .pump-skin #pipeControls { margin-top: 4px; padding: 3px 6px 5px; }
+    .pump-skin .queue { min-height: 32px; margin: 3px 0 4px; }
+    .pump-skin .previewsquare { height: 32px; }
+    .pump-skin #gameStatus { margin-top: 3px; }
+    .pump-skin #gameStatus.pump-result-win, .pump-skin #gameStatus.pump-result-issue { padding: 5px 8px; }
+}
+

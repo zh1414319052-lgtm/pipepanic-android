@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="updates_title">版本更新</string>
+    <string name="updates_check">检查浩科版更新</string>
+    <string name="updates_privacy">在首页空闲时从 haoke.org 检查签名版本信息。不上传棋盘、分数记录或设备标识；服务器可见 IP 等普通网络连接信息。</string>
+    <string name="updates_checking">正在检查更新…</string>
+    <string name="updates_available">发现新版本 %1$s</string>
+    <string name="updates_view">查看版本</string>
+    <string name="updates_later">稍后提醒</string>
+    <string name="updates_ignore">忽略此版本</string>
+    <string name="updates_current">暂无兼容的新版本。</string>
+    <string name="updates_unregistered">当前安装版本尚未开通更新通道。</string>
+    <string name="updates_unavailable">无法验证更新信息，请稍后重试。</string>
+    <string name="updates_storage_failed">无法保存更新提醒设置。</string>
+    <string name="updates_browser_unavailable">没有可用于打开版本页面的浏览器。</string>
+    <string name="haoke_website">浩科工具站</string>
+</resources>

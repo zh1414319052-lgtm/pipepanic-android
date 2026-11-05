@@ -1,0 +1,11 @@
+{
+  "name": "pipepanic-android-fidelity",
+  "version": "0.26.0",
+  "private": true,
+  "scripts": {
+    "build:renderer": "esbuild tools/render/fidelity-renderer.js --bundle --minify --format=iife --target=es2020 --outfile=app/src/main/assets/jspp/fidelity-runtime.js",
+    "test": "node --test tests/*.cjs"
+  },
+  "dependencies": {"three": "0.187.0"},
+  "devDependencies": {"esbuild": "0.28.2"}
+}

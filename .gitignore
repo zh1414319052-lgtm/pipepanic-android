@@ -26,3 +26,16 @@ proguard/
 # Gradle stuff
 build
 .gradle
+node_modules/
+*.blend1
+art/source-water/samples/
+*.apk
+*.p12
+*.jks
+*.keystore
+*.dpapi
+*.log
+art/ui/device/
+docs/evidence-*/
+docs/QA-*.md
+README-QA.md

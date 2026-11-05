@@ -47,13 +47,13 @@ var ppdebug = false;
 var pipebreakprob;
 var pppipebreakagestep;
 
-var ppflashhighscore_state = -1;
 
 var ppRNG = null;
 var ppbattlemodeseed = 0;
 var ppIndicateScore = true;
 
 var ppgamepaused = false;
+var levelMode = null;
 
 ppGamestateEnum = {
     BUILDING: 0,
@@ -70,6 +70,7 @@ var pppipearraypointer = null;
 var ppgametimer = ppgametimerseconds;
 var ppdifficulty = 0;
 var ppinfinite = 0;
+var ppReachedOutlet = false;
 
 var ppGameTickTimer = new TimerInterval("ppExecGameTick()", ppGameTimerTickMS);
 var ppGameTick = 0;
@@ -530,6 +531,8 @@ function ppcleardeadpipes() {
     if (nomorepipes) {
         ppfillpipespasscounter = ppfilledcounterbase;
         ppGameState = ppGamestateEnum.FILLING;
+        ppSoundCue('valve');
+        ppSyncSound();
     }
 }
 
@@ -541,7 +544,6 @@ function ppfillpipes() {
     var column = 0;
     var rowloop = 0;
     var colloop = 0;
-    var leakypipefound = false;
     var leakypipefound = false;
     var nomorepipes = true;
 
@@ -557,6 +559,7 @@ function ppfillpipes() {
                     ppUpdateGameScore(ppfilledpipescore * 2, ppGameTimerTickMS * 8, rowloop, colloop, i + 1);
 
                 if (ppboardarray[rowloop][colloop] == 1) {
+                    ppReachedOutlet = true;
                     ppUpdateGameScore(ppfilledendpointscore, ppGameTimerTickMS * 4, rowloop, colloop, 1); //bonus for filling the endpoint
                 }
 
@@ -578,11 +581,14 @@ function ppfillpipes() {
 
     if (!leakypipefound && !nomorepipes) {} else {
         ppGameState = ppGamestateEnum.DONE;
+        ppSoundCue(leakypipefound ? 'leak' : ppReachedOutlet ? 'success' : 'dry');
+        renderGameStatus();
+        ppGameTickTimer.pause();
 
-        // Ok, last bit, high score.
+        // Update and persist the best score together.
         if (ppscore > pphighscore) {
             pphighscore = ppscore;
-            ppflashhighscore_state = 1;
+            ppdisplayanumber(pphighscore, 4, "hscore");
             // Save the high score
             ppSetHighscore(pphighscore, ppbattlemodeseed);
         }
@@ -631,6 +637,7 @@ function ppbreakpipes() {
 
 // main dispacher routine: gets called periodically
 function ppExecGameTick() {
+    if (levelMode && levelMode.tick()) return;
 
     ppGameTick++;
     //debug("tick "+ppGameTick);
@@ -644,19 +651,20 @@ function ppExecGameTick() {
     ppfillpipes();
     ppbreakpipes();
 
-    flashperiod = Math.round(500 / ppGameTimerTickMS);
-
-    if (ppGameTick % flashperiod == 0)
-        ppflashhighscore();
 
 }
 
 
 function ppfillpipesnow() {
-    if (ppGameState == ppGamestateEnum.BUILDING) {
+    if (levelMode && levelMode.hasRound()) {
+        levelMode.fill();
+        return;
+    }
+    if (!ppgamepaused && ppGameState == ppGamestateEnum.BUILDING) {
         ppUpdateGameScore(ppgametimer * ppfillnowscore, 1500, -1, -1);
         ppcreatedeadpipesarray();
         ppGameState = ppGamestateEnum.CLEARINGDEAD; // Fill now!
+        renderGameStatus();
     }
 }
 
@@ -692,15 +700,19 @@ function debug_array(a) {
 }
 
 function ppprocessboardclick(boardyx) {
+    if (!ppCanRenderBoard()) return;
+    if (levelMode && levelMode.hasRound()) {
+        return levelMode.press(Number(boardyx.substr(5,2)), Number(boardyx.substr(7,2)));
+    }
     var count = 0;
     var row = 0;
     var column = 0;
 
     if (ppgamepaused)
-        return;
+        return 'tapPaused';
 
     if (ppGameState != ppGamestateEnum.BUILDING)
-        return;
+        return ppGameState === ppGamestateEnum.DONE ? 'tapRoundDone' : 'flowing';
 
     // Get and record yx.
     row = Math.abs(boardyx.substr(5, 2));
@@ -736,12 +748,7 @@ function ppprocessboardclick(boardyx) {
         pppreviewarray[3] = ppgetnextpipepiece();
         setBoardImage("preview3", 0, "empty", pppreviewarray[3]);
 
-    } else {
-
-        //fill pipes if endpoint is clicked
-        //if (ppboardarray[row][column] == 0)
-        //	ppfillpipesnow();
-    }
+    } else return 'tapTerminal';
 }
 
 function ppToggleScoreIndication() {
@@ -749,6 +756,7 @@ function ppToggleScoreIndication() {
 }
 
 function ppreset(battlemodeseed, difficulty) {
+    if (levelMode) levelMode.exit();
     var count = 0;
     var endpoint = 0;
     var colloop = 0;
@@ -761,7 +769,11 @@ function ppreset(battlemodeseed, difficulty) {
     ppGameTickTimer.pause();
     ppGameTick = 0;
 
-    var headline = "";
+    ppReachedOutlet = false;
+    var staleMarkers = document.querySelectorAll(".scoreMarker");
+    for (var i = 0; i < staleMarkers.length; i++) {
+        staleMarkers[i].parentNode.removeChild(staleMarkers[i]);
+    }
 
     //seed the RNG
     if ((battlemodeseed == undefined) || (battlemodeseed == 0)) { // random game
@@ -773,7 +785,6 @@ function ppreset(battlemodeseed, difficulty) {
         ppbattlemodeseed = battlemodeseed;
         ppRNG = new MersenneTwister(ppbattlemodeseed);
         ppRNG2 = new MersenneTwister(ppbattlemodeseed);
-        headline += "BATTLE " + battlemodeseed;
     }
 
     if (difficulty != undefined)
@@ -781,37 +792,14 @@ function ppreset(battlemodeseed, difficulty) {
     else
         ppdifficulty = 0;
 
-    switch (ppdifficulty) {
-        case -1:
-            headline += " (\u221E)";
-            break;
-        case 0:
-            break;
-        case 2:
-            headline += " (H)";
-            break;
-        case 3:
-            headline += " (VH)";
-            break;
-        default:
-            headline += " (D" + ppdifficulty + ")";
-    };
-
-    if (ppdifficulty == -1) {
-        ppdifficulty = 0;
-        ppinfinite = 1;
-    }
+    ppinfinite = ppdifficulty === -1 ? 1 : 0;
+    if (ppinfinite) ppdifficulty = 0;
     pipebreakprob = pipebreakprob_base * ppdifficulty;
     pppipebreakagestep = pppipebreakagestep_base * (ppdifficulty + 1);
 
     //clear pppipearray
     pppipearray = new Array(pppipearraysize);
     pppipearraypointer = pppipearraysize;
-
-    // Stop blinking high score.
-    if (ppflashhighscore_state > -1) {
-        ppflashhighscore_state = -1;
-    }
 
     // Clear game board and array.
     for (rowloop = 0; rowloop < pprows; rowloop++) {
@@ -846,14 +834,29 @@ function ppreset(battlemodeseed, difficulty) {
     ppdisplayanumber(ppgametimer, 3, "timer");
 
     ppGameState = ppGamestateEnum.BUILDING;
-    ppGameTickTimer.resume();
-    ppgamepaused = false;
+    if (!ppgamepaused) ppGameTickTimer.resume();
+    renderGameStatus();
+}
 
-
-    //UI
-    document.getElementById("headline").innerHTML = headline;
-
-
+function renderGameStatus() {
+    ppSyncSound();
+    if (levelMode && levelMode.hasRound()) {
+        levelMode.render();
+        return;
+    }
+    document.getElementById('fillButton').textContent = tr('fill');
+    var building = ppGameState === ppGamestateEnum.BUILDING;
+    var done = ppGameState === ppGamestateEnum.DONE;
+    var labels = [];
+    if (ppinfinite) labels.push(tr('unlimited'));
+    if (ppbattlemodeseed) labels.push(tr('challenge') + ' ' + ppbattlemodeseed);
+    document.getElementById('headline').textContent = labels.join(' · ');
+    var status = document.getElementById('gameStatus');
+    status.className = done ? (ppReachedOutlet ? 'pump-result-win' : 'pump-result-issue') : '';
+    status.textContent =
+        tr(building ? 'ready' : done ? (ppReachedOutlet ? 'connected' : 'stopped') : 'flowing');
+    document.getElementById('fillButton').disabled = !building || ppgamepaused || !ppCanRenderBoard();
+    if (typeof PumpBoard !== 'undefined') PumpBoard.refresh();
 }
 
 function ppgetnextpipepiece() {
@@ -937,125 +940,26 @@ function ppdecgametimer() {
 
 
 // --- Load all images used within document. ---
-pppipe0 = new Image();
-pppipe0.src = "images/pipe0.gif";
-pppipe1 = new Image();
-pppipe1.src = "images/pipe1.gif";
-pppipe2 = new Image();
-pppipe2.src = "images/pipe2.gif";
-pppipe3 = new Image();
-pppipe3.src = "images/pipe3.gif";
-pppipe4 = new Image();
-pppipe4.src = "images/pipe4.gif";
-pppipe5 = new Image();
-pppipe5.src = "images/pipe5.gif";
-pppipe6 = new Image();
-pppipe6.src = "images/pipe6.gif";
-pppipe7 = new Image();
-pppipe7.src = "images/pipe7.gif";
-pppipe8 = new Image();
-pppipe8.src = "images/pipe8.gif";
-pppipe9 = new Image();
-pppipe9.src = "images/pipe9.gif";
-pppipe10 = new Image();
-pppipe10.src = "images/pipe10.gif";
-pppipe11 = new Image();
-pppipe11.src = "images/pipe11.gif";
-pppipe12 = new Image();
-pppipe12.src = "images/pipe12.gif";
-pppipe13 = new Image();
-pppipe13.src = "images/pipe13.gif";
-pppipe14 = new Image();
-pppipe14.src = "images/pipe14.gif";
-pppipe15 = new Image();
-pppipe15.src = "images/pipe15.gif";
-pppipe16 = new Image();
-pppipe16.src = "images/pipe16.gif";
+function ppSoundCue(name) {
+    if (typeof PumpAudio !== 'undefined') PumpAudio.play(name);
+}
 
-pppipefull0 = new Image();
-pppipefull0.src = "images/pipefull0.gif";
-pppipefull1 = new Image();
-pppipefull1.src = "images/pipefull1.gif";
-pppipefull2 = new Image();
-pppipefull2.src = "images/pipefull2.gif";
-pppipefull3 = new Image();
-pppipefull3.src = "images/pipefull3.gif";
-pppipefull4 = new Image();
-pppipefull4.src = "images/pipefull4.gif";
-pppipefull5 = new Image();
-pppipefull5.src = "images/pipefull5.gif";
-pppipefull6 = new Image();
-pppipefull6.src = "images/pipefull6.gif";
-pppipefull7 = new Image();
-pppipefull7.src = "images/pipefull7.gif";
-pppipefull8 = new Image();
-pppipefull8.src = "images/pipefull8.gif";
-pppipefull9 = new Image();
-pppipefull9.src = "images/pipefull9.gif";
-pppipefull10 = new Image();
-pppipefull10.src = "images/pipefull10.gif";
-pppipefull11 = new Image();
-pppipefull11.src = "images/pipefull11.gif";
-pppipefull12 = new Image();
-pppipefull12.src = "images/pipefull12.gif";
-pppipefull13 = new Image();
-pppipefull13.src = "images/pipefull13.gif";
-pppipefull14 = new Image();
-pppipefull14.src = "images/pipefull14.gif";
-pppipefull15 = new Image();
-pppipefull15.src = "images/pipefull15.gif";
-pppipefull16 = new Image();
-pppipefull16.src = "images/pipefull16.gif";
+function ppSyncSound() {
+    if (typeof PumpAudio !== 'undefined') PumpAudio.sync();
+}
 
-ppnumber0 = new Image();
-ppnumber0.src = "images/0.gif";
-ppnumber1 = new Image();
-ppnumber1.src = "images/1.gif";
-ppnumber2 = new Image();
-ppnumber2.src = "images/2.gif";
-ppnumber3 = new Image();
-ppnumber3.src = "images/3.gif";
-ppnumber4 = new Image();
-ppnumber4.src = "images/4.gif";
-ppnumber5 = new Image();
-ppnumber5.src = "images/5.gif";
-ppnumber6 = new Image();
-ppnumber6.src = "images/6.gif";
-ppnumber7 = new Image();
-ppnumber7.src = "images/7.gif";
-ppnumber8 = new Image();
-ppnumber8.src = "images/8.gif";
-ppnumber9 = new Image();
-ppnumber9.src = "images/9.gif";
-ppminus = new Image();
-ppminus.src = "images/minus.gif";
+function ppCanRenderBoard() {
+    return typeof PumpBoard === 'undefined' || PumpBoard.active();
+}
 
 function ppscale() {
-    var board = document.getElementById("board");
-    var width = document.body.clientWidth - document.getElementById("controlarea").offsetWidth - 2;
-    var height = document.body.clientHeight;
-    var boarddim = Math.min(width, height);
-    board.style.width = boarddim + "px";
-    board.style.height = boarddim + "px";
-    document.getElementById("controlarea").style.height = boarddim + "px";
-    debug("w:" + width + " h:" + height + " board:" + boarddim);
-
-    document.getElementById("headline").style.fontSize = boarddim / 11 + "px";
+    var stage = document.getElementById('boardStage');
+    var width = document.getElementById('topBar').clientWidth;
+    var wide = window.innerWidth >= 520 && window.innerWidth > window.innerHeight;
+    var availableHeight = window.innerHeight - stage.getBoundingClientRect().top - 20;
+    var size = levelMode ? levelMode.size() : [ppcolumns, pprows];
+    if (typeof PumpBoard !== 'undefined') PumpBoard.fit(width, availableHeight, wide, size);
 }
-
-
-
-function setImage(id, image) {
-    style = document.getElementById(id).style
-    style.opacity = 1;
-    if (image == "")
-        style.backgroundImage = "none";
-    else
-        style.backgroundImage = "url(" + image.src + ")";
-
-    return style;
-}
-
 
 function findBoardElId(row, column) {
     if (row < 10) row = "0" + row;
@@ -1066,51 +970,13 @@ function findBoardElId(row, column) {
 }
 
 function setBoardImage(row, column, pipetype, pipeid, breakage) {
-    imname = "pppipe";
-    if (row.length > 1)
-        el = row;
-    else
-        el = findBoardElId(row, column);
-
-    style = document.getElementById(el).style
-    if (breakage == undefined)
-        breakage = 0;
-
-    if (pipetype == "empty")
-        imname = "pppipe";
-
-    if (pipetype == "full")
-        imname = "pppipefull";
-
-    if (pipetype != "blank")
-        style.backgroundImage = "url(" + eval(imname + pipeid).src + ")";
-    else
-        style.backgroundImage = "none";
-
-    style.opacity = 1;
-    if (breakage == 0) {} else if (breakage >= 1 - pppipebreakagestep) {
-        //style.backgroundImage =  "url('images/construction.png')";
-        style.backgroundImage = "none";
-    } else {
-        style.opacity = 1 - Math.pow(breakage, 4);
-        style.backgroundImage += ",url('images/construction.png')";
-    }
+    var id = typeof row === 'string' ? row : findBoardElId(row, column);
+    var tile = document.getElementById(id);
+    tile.pumpPipe = pipetype === 'blank' ? null :
+        {id:pipeid, filled:pipetype === 'full', broken:breakage > 0};
+    if (typeof PumpBoard !== 'undefined') PumpBoard.refresh();
 }
 
-
-function ppflashhighscore() {
-    if (ppflashhighscore_state < 0)
-        return;
-
-    if (ppflashhighscore_state) {
-        ppdisplayanumber("", 4, "hscore");
-        ppflashhighscore_state = 0;
-
-    } else {
-        ppdisplayanumber(pphighscore, 4, "hscore");
-        ppflashhighscore_state = 1;
-    }
-}
 
 function ppUpdateGameScore(diff, displayms, row, col, count) {
     debug("score at r" + row + " c" + col + ": " + diff);
@@ -1137,28 +1003,17 @@ function ppUpdateGameScore(diff, displayms, row, col, count) {
             text = "" + diff;
         }
 
-        toppos = el.offsetTop - el.offsetHeight * 0.7;
+        var projected = typeof PumpBoard !== 'undefined' && row >= 0 && col >= 0
+            ? PumpBoard.marker(row,col) : null;
+        var box = projected || {left:el.offsetLeft,top:el.offsetTop,width:el.offsetWidth,height:el.offsetHeight};
+        toppos = Math.max(0,box.top - box.height * 0.7);
+        leftpos = box.left + (col === ppcolumns - 1 ? 0 : box.width * 0.7);
+        if (count > 0) toppos += 0.5 * count * box.height;
 
-        if (toppos < 0)
-            toppos = el.offsetTop - el.offsetHeight * 0.1;
-
-        leftpos = el.offsetLeft + el.offsetWidth * 0.7;
-
-        if (col == ppcolumns - 1)
-            leftpos -= el.offsetWidth * 0.7;
-
-        if (count > 0)
-            toppos += 0.5 * count * el.offsetHeight;
-
-        width = el.offsetHeight * 1;
-        height = el.offsetHeight * 0.7;
-
-        if (text.length > 3)
-            fontsize = el.offsetHeight * 0.25;
-        else
-            fontsize = el.offsetHeight * 0.4;
-
-        paddingTop = el.offsetHeight * 0.2;
+        width = box.height;
+        height = box.height * 0.7;
+        fontsize = box.height * (text.length > 3 ? 0.25 : 0.4);
+        paddingTop = box.height * 0.2;
 
         marker.style.top = "" + toppos + "px";
         marker.style.left = "" + leftpos + "px";
@@ -1172,115 +1027,47 @@ function ppUpdateGameScore(diff, displayms, row, col, count) {
 
         document.body.appendChild(marker);
 
-        fadesteps = 5;
-        marker.opacity = 0.9;
-        marker.opacityDiv = Math.pow(marker.opacity / 0.1, 1 / fadesteps);
-
-        window.setInterval(function() {
-            marker.opacity /= marker.opacityDiv;
-
-            if (marker.opacity > 0.1)
-                marker.style.opacity = "" + marker.opacity;
-            else {
-                marker.style.display = "none";
-                try {
-                    marker.outerHTML = "";
-                } catch (e) {};
-
-            }
-        }.bind(marker), displayms / fadesteps);
+        window.setTimeout(function() {
+            if (marker.parentNode) marker.parentNode.removeChild(marker);
+        }, displayms);
     }
 }
 
 function ppdisplayanumber(number, digits, target) {
-    var units1000s = 0;
-    var units100s = 0;
-    var units10s = 0;
-    var units1s = 0;
-
-    if (number === "") {
-        setImage(target + "sign", "");
-
-        if (digits >= 4)
-            setImage(target + "1000", "");
-
-        if (digits >= 3)
-            setImage(target + "100", "");
-
-        if (digits >= 2)
-            setImage(target + "10", "");
-
-        setImage(target + "1", "");
-        return;
-    }
-
-    if (number < 0) {
-        number = Math.abs(number);
-        setImage(target + "sign", ppminus);
-
-    } else {
-        setImage(target + "sign", "");
-    }
-
-    if (digits >= 4) {
-        units1000s = Math.floor(number % 10000 / 1000); // 'mod'ed to isolate the units.
-        setImage(target + "1000", eval("ppnumber" + units1000s));
-    }
-
-    if (digits >= 3) {
-        units100s = Math.floor(number % 1000 / 100);
-        setImage(target + "100", eval("ppnumber" + units100s));
-    }
-
-    if (digits >= 2) {
-        units10s = Math.floor(number % 100 / 10);
-        setImage(target + "10", eval("ppnumber" + units10s));
-    }
-
-    units1s = Math.floor(number % 10);
-    setImage(target + "1", eval("ppnumber" + units1s));
+    var label = document.getElementById(target === 'timer' ? 'timer1' : target);
+    label.textContent = String(number).replace('-', '−');
 }
-
-
-function ppdebugsecretbutton() {
-    if (ppdebug == 2) {
-        document.getElementById("ppdebug").style.display = "block";
-    } else {
-        document.getElementById("ppdebug").style.display = "none";
-    };
-    ppdebug = (ppdebug + 1) % 5;
-}
-
 
 function pauseGame() {
     ppGameTickTimer.pause();
     ppgamepaused = true;
+    if (levelMode) levelMode.onPause();
+    renderGameStatus();
+    if (typeof PumpBoard !== 'undefined') PumpBoard.refresh();
 }
 
 function resumeGame() {
-    ppGameTickTimer.resume();
+    var wasPaused = ppgamepaused;
     ppgamepaused = false;
+    if ((!levelMode || !levelMode.sync()) && wasPaused && ppGameState !== ppGamestateEnum.DONE) {
+        ppGameTickTimer.resume();
+    }
+    renderGameStatus();
+    if (typeof PumpBoard !== 'undefined') PumpBoard.refresh();
 }
 
 
 function help(show) {
-    if (show) {
-        document.getElementById("board").style.display = "none";
-        document.getElementById("help").style.display = "inline";
-        document.getElementById("controlarea").style.display = "none";
-
-    } else {
-        document.getElementById("board").style.display = "inline";
-        document.getElementById("help").style.display = "none";
-        document.getElementById("controlarea").style.display = "inline";
-    }
+    if (levelMode) levelMode.help(show);
+    else document.getElementById("game").hidden = !!show;
+    document.getElementById("help").style.display = show ? "block" : "none";
+    window.scrollTo(0, 0);
+    if (!show) ppscale();
 }
 
 function debug(dbg) {
-    document.getElementById("ppdebug").innerHTML = document.getElementById("ppdebug").innerHTML + "<p>" + dbg + "</p>";
-    window.console.log(dbg);
+    // Upstream tracing disabled in normal play; no hidden DOM log grows during a round.
 }
-
 
 // ------------------------------------------------------------------
 // AUX
@@ -1290,6 +1077,8 @@ function debug(dbg) {
 
 function resetHighscore() {
     ppSetHighscore(0, ppbattlemodeseed);
+    pphighscore = 0;
+    ppdisplayanumber(0, 4, "hscore");
 }
 
 function ppSetHighscore(value, battlemodeseed) {
@@ -1334,6 +1123,7 @@ function TimerInterval(action, delay) {
     this.pause = function() {
         if (this.timerId != null)
             window.clearInterval(this.timerId);
+        this.timerId = null;
     };
     this.stop = function() {
         this.running = false;

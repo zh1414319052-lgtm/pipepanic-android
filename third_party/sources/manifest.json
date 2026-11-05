@@ -1,0 +1,129 @@
+[
+  {
+    "file": "androidx.drawerlayout.drawerlayout-1.0.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/drawerlayout/drawerlayout/1.0.0/drawerlayout-1.0.0-sources.jar",
+    "bytes": 20020,
+    "sha256": "3702e90acc99c16d192eada8467aea9595d1c3fff3e2155ffe66e5f31e334513"
+  },
+  {
+    "file": "androidx.drawerlayout.drawerlayout-1.0.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/drawerlayout/drawerlayout/1.0.0/drawerlayout-1.0.0.pom",
+    "bytes": 2006,
+    "sha256": "da6733425a83f5ce850878fa7201082345fed7c668dd58550fdd19c0396c6fa4"
+  },
+  {
+    "file": "androidx.customview.customview-1.0.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/customview/customview/1.0.0/customview-1.0.0-sources.jar",
+    "bytes": 29305,
+    "sha256": "87c910a3c3c5d1e4881ebcc7a8f7fced04fdad6ff1f8e5ff7f100adf62df1787"
+  },
+  {
+    "file": "androidx.customview.customview-1.0.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/customview/customview/1.0.0/customview-1.0.0.pom",
+    "bytes": 1795,
+    "sha256": "ce9e47b87184f5bd5e139e9becd5b26476d42d78c31bf2fdedc37acb41b9ad49"
+  },
+  {
+    "file": "androidx.core.core-1.3.1-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.3.1/core-1.3.1-sources.jar",
+    "bytes": 623836,
+    "sha256": "ae0e7ef2b5be9a59ef6d8c831090ba3e4407f9ae21e453c1df9f6b82cb46be28"
+  },
+  {
+    "file": "androidx.core.core-1.3.1.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.3.1/core-1.3.1.pom",
+    "bytes": 2181,
+    "sha256": "ac850f5367d0877c58d3fc9439b453ea293cf5f840fc043d535085a0cdf4eafb"
+  },
+  {
+    "file": "net.i2p.crypto.eddsa-0.3.0-sources.jar",
+    "source": "https://repo.maven.apache.org/maven2/net/i2p/crypto/eddsa/0.3.0/eddsa-0.3.0-sources.jar",
+    "bytes": 56536,
+    "sha256": "fe33da9ed0cec6b24bb4ab3dd14f11e01822496f8e4ee9c9bb7da0ad5961eea4"
+  },
+  {
+    "file": "net.i2p.crypto.eddsa-0.3.0.pom",
+    "source": "https://repo.maven.apache.org/maven2/net/i2p/crypto/eddsa/0.3.0/eddsa-0.3.0.pom",
+    "bytes": 6785,
+    "sha256": "b6b13878e4bae8b768d7ea5732cb4d66ab2f5e9fe707c0a1a776cde9de52051b"
+  },
+  {
+    "file": "androidx.lifecycle.lifecycle-runtime-2.0.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.0.0/lifecycle-runtime-2.0.0-sources.jar",
+    "bytes": 6702,
+    "sha256": "472d99cf093b3b65d24a5707138ce51b160eb81a0ed59095ca8c8e0883ab1524"
+  },
+  {
+    "file": "androidx.lifecycle.lifecycle-runtime-2.0.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime/2.0.0/lifecycle-runtime-2.0.0.pom",
+    "bytes": 1731,
+    "sha256": "a92a46fa7aec8ac326a5d578734a2d5b63206976996b9e06cae171b35b0ab6de"
+  },
+  {
+    "file": "androidx.versionedparcelable.versionedparcelable-1.1.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.0/versionedparcelable-1.1.0-sources.jar",
+    "bytes": 21164,
+    "sha256": "135016af471acf4cd9583d36ceb779710c6b46812ccaaef7c526d5d60eae6b0b"
+  },
+  {
+    "file": "androidx.versionedparcelable.versionedparcelable-1.1.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.0/versionedparcelable-1.1.0.pom",
+    "bytes": 1643,
+    "sha256": "c729c7be0cc06323bda829d460666e79dbd43b799a21089a44bd3b293dc253b5"
+  },
+  {
+    "file": "androidx.collection.collection-1.0.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/collection/collection/1.0.0/collection-1.0.0-sources.jar",
+    "bytes": 33973,
+    "sha256": "3dcefe7a84308582986dda5e2cf66fd3bd279f076e3a58c377e6ed66d5233b9d"
+  },
+  {
+    "file": "androidx.collection.collection-1.0.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/collection/collection/1.0.0/collection-1.0.0.pom",
+    "bytes": 1497,
+    "sha256": "a7913a5275ad68e555d2612ebe8c14c367b153e14ca48a1872a64899020e54ef"
+  },
+  {
+    "file": "androidx.lifecycle.lifecycle-common-2.0.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.0.0/lifecycle-common-2.0.0-sources.jar",
+    "bytes": 16726,
+    "sha256": "8e85da54078b60444cffe7c581e1efd82942eb519db682046f26ff7d7b868065"
+  },
+  {
+    "file": "androidx.lifecycle.lifecycle-common-2.0.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common/2.0.0/lifecycle-common-2.0.0.pom",
+    "bytes": 1663,
+    "sha256": "04d525073469214d0c99e81aaa875dd548ba32b82945abd8326bc50229df700d"
+  },
+  {
+    "file": "androidx.arch.core.core-common-2.0.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/arch/core/core-common/2.0.0/core-common-2.0.0-sources.jar",
+    "bytes": 5549,
+    "sha256": "0321dc07683a12b333040592c90fa023aca04d0df42af740798c0f745c788c73"
+  },
+  {
+    "file": "androidx.arch.core.core-common-2.0.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/arch/core/core-common/2.0.0/core-common-2.0.0.pom",
+    "bytes": 1648,
+    "sha256": "4b6f1d459ddd146b4e85ed6d46e86eb8c2639c5de47904e6db4d698721334220"
+  },
+  {
+    "file": "androidx.annotation.annotation-1.1.0-sources.jar",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.1.0/annotation-1.1.0-sources.jar",
+    "bytes": 52164,
+    "sha256": "92bcd2773b5624fd88b7ee21d5685145d7cafed59316c4ce83de33a7b2dd8c02"
+  },
+  {
+    "file": "androidx.annotation.annotation-1.1.0.pom",
+    "source": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.1.0/annotation-1.1.0.pom",
+    "bytes": 1309,
+    "sha256": "2e9372ba7780ef44952adbf86b66e1f08682c1e5277c926185f6564a13799efe"
+  },
+  {
+    "file": "three-0.187.0.tgz",
+    "source": "https://registry.npmmirror.com/three/-/three-0.187.0.tgz",
+    "bytes": 4795351,
+    "sha256": "ff540832ded0cfe919764d24a3d88f3e2a05f23303f876423e4f893841e90728",
+    "npmIntegrity": "sha512-Qiu7R+Cmh8CstZsY1uJOSWnVlfo7ZtNLV7mF8Jltk3LB3AtDu9cRZlcnRKkAk8Y4z6KKw35z7Y7Urd7jWY8etA=="
+  }
+]

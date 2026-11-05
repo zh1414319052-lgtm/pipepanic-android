@@ -1,0 +1,15 @@
+{
+  "softwareId": "de681cad754b9264",
+  "applicationId": "org.olgsoft.apipepanic.haoke",
+  "versionCode": 32,
+  "versionName": "0.21-haoke.32",
+  "upstreamVersion": "0.21",
+  "upstreamCommit": "f87c0d754641572b50919cd5c2d6d13d0a3ec440",
+  "channel": "stable",
+  "certificateSha256": "3f29b3611c7c94dec1f78193425d85210e20e351617529b61d4aee29704e25c5",
+  "keyId": "haoke-updates-000ef7a45a5a58d5",
+  "publicKeyBase64": "+8cSV1C+t+6GipgPi3a2zjZ4T3W/Z+tZDKzzO4tQXOY=",
+  "feed": "https://www.haoke.org/api/client-updates/v1/org.olgsoft.apipepanic.haoke/stable",
+  "downloadPage": "https://www.haoke.org/software/de681cad754b9264",
+  "sourceRepository": "https://github.com/zh1414319052-lgtm/pipepanic-android"
+}

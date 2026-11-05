@@ -1,0 +1,22 @@
+{
+  "source": "art/source-water/PipePanic_Blue_Water.blend + flow_cache; export samples with tools/art/export_liquid_source.py",
+  "frames": [
+    57,
+    60,
+    63,
+    66,
+    69,
+    72,
+    75,
+    78,
+    81,
+    84,
+    87,
+    90,
+    93,
+    96,
+    99,
+    102
+  ],
+  "method": "Reusable Mantaflow mesh samples, route deformation and game-state front clipping; not realtime fluid physics"
+}
